@@ -1,0 +1,10 @@
+{
+  "users": [
+    {
+      "id": "u_8ad718aa92e4b_19e90fab27a",
+      "name": "Aryan kumar",
+      "email": "aryanhoodakumar133@gmail.com",
+      "passwordHash": "$2b$10$bG7bBCuwynesKrSr7L98autdj.GM74bVjDECqldAvcI8XwgTEsZrK"
+    }
+  ]
+}

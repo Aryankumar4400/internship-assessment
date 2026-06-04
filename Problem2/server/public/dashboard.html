@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;background:#f5f7fb;margin:0;display:flex;min-height:100vh;align-items:center;justify-content:center;}
+    .card{background:#fff;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.08);padding:24px;width:520px;}
+    h1{margin:0 0 16px;font-size:22px;}
+    .row{display:flex;gap:12px;flex-wrap:wrap;}
+    .pill{background:#eef2ff;border:1px solid #c7d2fe;color:#3730a3;padding:10px 12px;border-radius:999px;font-weight:700;font-size:13px;}
+    button{margin-top:16px;width:200px;padding:10px;border:0;border-radius:10px;background:#111827;color:#fff;font-weight:700;cursor:pointer;}
+    a{color:#4f46e5;text-decoration:none;}
+    .muted{color:#6b7280;font-size:14px;}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Dashboard</h1>
+    <div class="muted">Protected page. If you were not authenticated, the server would block access.</div>
+
+    <div class="row" style="margin-top:16px">
+      <div class="pill" id="pillName">Name: -</div>
+      <div class="pill" id="pillEmail">Email: -</div>
+    </div>
+
+    <button id="logoutBtn">Logout</button>
+  </div>
+
+<script>
+  const tokenKey = "problem2_token";
+
+  function base64UrlDecode(str){
+    str = str.replace(/-/g, '+').replace(/_/g, '/');
+    const pad = '='.repeat((4 - (str.length % 4)) % 4);
+    const decoded = atob(str + pad);
+    return decodeURIComponent(decoded.split('').map(c => {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+  }
+
+  function readTokenPayload(){
+    const token = localStorage.getItem(tokenKey);
+    if(!token) return null;
+    const parts = token.split('.');
+    if(parts.length < 2) return null;
+    try{ return JSON.parse(base64UrlDecode(parts[1])); }catch{ return null; }
+  }
+
+  const payload = readTokenPayload();
+  document.getElementById('pillName').textContent = 'Name: ' + (payload?.name || '-');
+  document.getElementById('pillEmail').textContent = 'Email: ' + (payload?.email || '-');
+
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    localStorage.removeItem(tokenKey);
+    window.location.href = '/login';
+  });
+</script>
+</body>
+</html>
+
